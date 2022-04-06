@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "49144889203",
+    "project_id": "intro-mobile",
+    "storage_bucket": "intro-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49144889203:android:149a96a3577c877139cf06",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49144889203-rpq3hl0tmlhs6nt57p22ccqmln20sdl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3GdwVcUmqjCH_hBJ5CaK_DuYYl4SmS60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49144889203-rpq3hl0tmlhs6nt57p22ccqmln20sdl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
