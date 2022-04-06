@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -8,19 +9,29 @@ class MainscreenLector extends StatefulWidget {
   State<MainscreenLector> createState() => _MainscreenLectorState();
 }
 
-
-class Login extends StatefulWidget{
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _Login();
-
 }
 
-class _Login extends State<Login>{
-
-final TextEditingController _usernamecontroller = TextEditingController();
-final TextEditingController _passwordcontroller = TextEditingController();
+class _Login extends State<Login> {
+  static Future<User?> login({required String email, required String password, required BuildContext context}) async{
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try{
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch(e){
+      if(e.code == "user-not-found"){
+        print("Wrong credentials");
+      }
+    }
+    return user;
+  }
+  final TextEditingController _usernamecontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +43,7 @@ final TextEditingController _passwordcontroller = TextEditingController();
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Sign in',
+                  'Login',
                   style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.w500,
@@ -43,11 +54,12 @@ final TextEditingController _passwordcontroller = TextEditingController();
               child: TextField(
                 controller: _usernamecontroller,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.mail , color: Colors.black),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                   border: OutlineInputBorder(),
-                  labelText: 'UserName',
+                  labelText: 'Username',
                 ),
               ),
             ),
@@ -57,6 +69,7 @@ final TextEditingController _passwordcontroller = TextEditingController();
                 controller: _passwordcontroller,
                 obscureText: true,
                 decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.lock , color: Colors.black),
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 ),
@@ -67,36 +80,37 @@ final TextEditingController _passwordcontroller = TextEditingController();
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('Login'),
-                  onPressed: () {
-                  },
-                )
-            ),
+                  onPressed: () async {
+                    User? user = await login(email: _usernamecontroller.text, password: _passwordcontroller.text, context: context);
+                    if(user != null) {
+                        // navigate to a different widget
+                      }
+                    },
+                )),
           ],
         ));
-}}
+  }
+}
 
-
-class _MainscreenLectorState extends State<MainscreenLector>{
-
+class _MainscreenLectorState extends State<MainscreenLector> {
   Future<FirebaseApp> _initializeFireBaseApp() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
   }
 
-final TextEditingController _usernamecontroller = TextEditingController();
-final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _usernamecontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-      future: _initializeFireBaseApp(),
-      builder: (context, snapshot) {
-      if(snapshot.connectionState == ConnectionState.done){
-        return Login();
-      }
-      return const Center(child: CircularProgressIndicator());
-    })
-    );
+        body: FutureBuilder(
+            future: _initializeFireBaseApp(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Login();
+              }
+              return const Center(child: CircularProgressIndicator());
+            }));
   }
 }
