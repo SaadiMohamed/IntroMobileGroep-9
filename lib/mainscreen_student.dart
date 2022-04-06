@@ -7,7 +7,7 @@ class MainscreenStudent extends StatefulWidget {
   State<MainscreenStudent> createState() => _MainscreenStudentState();
 }
 
-class _MainscreenStudentState extends State<MainscreenStudent>{
+class _MainscreenStudentState extends State<MainscreenStudent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
