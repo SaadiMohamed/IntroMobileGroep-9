@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:project/mainscreenLector.dart';
-import 'package:project/mainscreenStudent.dart';
+import 'package:project/mainscreen_lector.dart';
+import 'package:project/mainscreen_student.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,24 +51,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = -1;
-  int _selectedIndex(){
-    return _currentIndex +1;
+  int _selectedIndex() {
+    return _currentIndex + 1;
   }
-  int index(){
-    if(_currentIndex < 0){
+
+  int index() {
+    if (_currentIndex < 0) {
       return 0;
     }
     return _currentIndex;
-  } 
+  }
+
   final List<Widget> _children = [
-    const Center(child: Text("Welcome to your exam, please choose the appropriate role below at the tabs")),
+    const Center(
+        child: Text(
+            "Welcome to your exam, please choose the appropriate role below at the tabs")),
     const MainscreenStudent(),
     const MainscreenLector(),
   ];
 
   @override
   Widget build(BuildContext context) {
-
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -97,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         onTap: (int index) {
           setState(() {
-              _currentIndex = index;  
+            _currentIndex = index;
           });
         },
       ), // This trailing comma makes auto-formatting nicer for build methods.

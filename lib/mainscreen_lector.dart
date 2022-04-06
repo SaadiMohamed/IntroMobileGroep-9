@@ -17,19 +17,24 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  static Future<User?> login({required String email, required String password, required BuildContext context}) async{
+  static Future<User?> login(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
-    try{
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
       user = userCredential.user;
-    } on FirebaseAuthException catch(e){
-      if(e.code == "user-not-found"){
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
         print("Wrong credentials");
       }
     }
     return user;
   }
+
   final TextEditingController _usernamecontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
 
@@ -54,7 +59,7 @@ class _Login extends State<Login> {
               child: TextField(
                 controller: _usernamecontroller,
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.mail , color: Colors.black),
+                  prefixIcon: Icon(Icons.mail, color: Colors.black),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
                   ),
@@ -69,7 +74,7 @@ class _Login extends State<Login> {
                 controller: _passwordcontroller,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock , color: Colors.black),
+                  prefixIcon: Icon(Icons.lock, color: Colors.black),
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 ),
@@ -81,11 +86,14 @@ class _Login extends State<Login> {
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () async {
-                    User? user = await login(email: _usernamecontroller.text, password: _passwordcontroller.text, context: context);
-                    if(user != null) {
-                        // navigate to a different widget
-                      }
-                    },
+                    User? user = await login(
+                        email: _usernamecontroller.text,
+                        password: _passwordcontroller.text,
+                        context: context);
+                    if (user != null) {
+                      // navigate to a different widget
+                    }
+                  },
                 )),
           ],
         ));
@@ -98,9 +106,6 @@ class _MainscreenLectorState extends State<MainscreenLector> {
     return firebaseApp;
   }
 
-  final TextEditingController _usernamecontroller = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +113,7 @@ class _MainscreenLectorState extends State<MainscreenLector> {
             future: _initializeFireBaseApp(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Login();
+                return const Login();
               }
               return const Center(child: CircularProgressIndicator());
             }));
