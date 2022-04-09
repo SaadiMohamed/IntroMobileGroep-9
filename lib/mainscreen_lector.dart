@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:project/exammenu_lector.dart';
 
 class MainscreenLector extends StatefulWidget {
   const MainscreenLector({Key? key}) : super(key: key);
@@ -91,7 +92,12 @@ class _Login extends State<Login> {
                         password: _passwordcontroller.text,
                         context: context);
                     if (user != null) {
-                      // navigate to a different widget
+                      Navigator.push<void>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ExammenuLector(),
+                            ),
+                          );
                     }
                   },
                 )),
