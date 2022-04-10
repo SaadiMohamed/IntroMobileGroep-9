@@ -1,28 +1,25 @@
-
 import 'package:flutter/material.dart';
-import 'package:project/make_exam.dart';
 
-class ExammenuLector extends StatefulWidget {
-  const ExammenuLector({Key? key}) : super(key: key);
+class Makeexam extends StatefulWidget {
+  const Makeexam({Key? key}) : super(key: key);
 
   @override
-  State<ExammenuLector> createState() => _ExammenuLectorState();
+  State<Makeexam> createState() => _MakeexamState();
 }
 
-class _ExammenuLectorState extends State<ExammenuLector> {
+class _MakeexamState extends State<Makeexam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exam Menu'),
+        title: const Text('Kies soort vraag'),
       ),
-      body: 
-      Center(child: Row(
+      body: Align(alignment: Alignment.bottomCenter, child: (Padding(padding: const EdgeInsets.all(20) , child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ElevatedButton(
+        ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.blue,
               onPrimary: Colors.white,
@@ -30,16 +27,11 @@ class _ExammenuLectorState extends State<ExammenuLector> {
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120),
-              maximumSize: const Size(200, 120) //////// HERE
+              minimumSize: const Size(200, 80),
+              maximumSize: const Size(200, 80) //////// HERE
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Makeexam()),
-              );
-            },
-            child: const Text('Maak Examen', style: TextStyle(fontSize: 22)),
+            onPressed: () {},
+            child: const Text('Multiple choice', style: TextStyle(fontSize: 22)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -49,10 +41,10 @@ class _ExammenuLectorState extends State<ExammenuLector> {
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120), //////// HERE
+              minimumSize: const Size(200, 80), //////// HERE
             ),
             onPressed: () {},
-            child: const Text('Verbeter Examen',style: TextStyle(fontSize: 22)),
+            child: const Text('Open vraag',style: TextStyle(fontSize: 22)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -62,16 +54,17 @@ class _ExammenuLectorState extends State<ExammenuLector> {
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120),
-              maximumSize: const Size(200, 120) //////// HERE
+              minimumSize: const Size(200, 80),
+              maximumSize: const Size(200, 80) //////// HERE
             ),
             onPressed: () {},
-            child: const Text('Studenten toevoegen',style: TextStyle(fontSize: 22), textAlign: TextAlign.center,),
+            child: const Text('Code correctie',style: TextStyle(fontSize: 22), textAlign: TextAlign.center,),
           )
         ],
-      ),)
+      ),
+      )
+    )
+    )
     );
   }
 }
-
-
