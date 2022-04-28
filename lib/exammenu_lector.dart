@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:project/add_students.dart';
 import 'package:project/make_exam.dart';
 
 class ExammenuLector extends StatefulWidget {
@@ -13,65 +13,77 @@ class _ExammenuLectorState extends State<ExammenuLector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Exam Menu'),
-      ),
-      body: 
-      Center(child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              shadowColor: Colors.greenAccent,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120),
-              maximumSize: const Size(200, 120) //////// HERE
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Makeexam()),
-              );
-            },
-            child: const Text('Maak Examen', style: TextStyle(fontSize: 22)),
+        appBar: AppBar(
+          title: const Text('Exam Menu'),
+        ),
+        body: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                  child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    onPrimary: Colors.white,
+                    shadowColor: Colors.greenAccent,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
+                    minimumSize: const Size(200, 120),
+                    maximumSize: const Size(200, 120) //////// HERE
+                    ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Makeexam()),
+                  );
+                },
+                child:
+                    const Text('Maak Examen', style: TextStyle(fontSize: 22)),
+              )),
+              Flexible(
+                  child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  onPrimary: Colors.white,
+                  shadowColor: Colors.greenAccent,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0)),
+                  minimumSize: const Size(200, 120), //////// HERE
+                ),
+                onPressed: () {},
+                child: const Text('Verbeter Examen',
+                    style: TextStyle(fontSize: 22)),
+              )),
+              Flexible(
+                  child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    onPrimary: Colors.white,
+                    shadowColor: Colors.greenAccent,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
+                    minimumSize: const Size(200, 120),
+                    maximumSize: const Size(200, 120) //////// HERE
+                    ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddStudents()),
+                  );
+                },
+                child: const Text(
+                  'Studenten toevoegen',
+                  style: TextStyle(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+              ))
+            ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              shadowColor: Colors.greenAccent,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120), //////// HERE
-            ),
-            onPressed: () {},
-            child: const Text('Verbeter Examen',style: TextStyle(fontSize: 22)),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              shadowColor: Colors.greenAccent,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: const Size(200, 120),
-              maximumSize: const Size(200, 120) //////// HERE
-            ),
-            onPressed: () {},
-            child: const Text('Studenten toevoegen',style: TextStyle(fontSize: 22), textAlign: TextAlign.center,),
-          )
-        ],
-      ),)
-    );
+        ));
   }
 }
-
-
