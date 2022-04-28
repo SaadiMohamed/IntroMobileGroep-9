@@ -88,8 +88,8 @@ class _Login extends State<Login> {
                   child: const Text('Login'),
                   onPressed: () async {
                     User? user = await login(
-                        email: _usernamecontroller.text,
-                        password: _passwordcontroller.text,
+                        email: _usernamecontroller.text.trim(),
+                        password: _passwordcontroller.text.trim(),
                         context: context);
                     if (user != null) {
                       Navigator.push<void>(
@@ -114,14 +114,7 @@ class _MainscreenLectorState extends State<MainscreenLector> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: FutureBuilder(
-            future: _initializeFireBaseApp(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return const Login();
-              }
-              return const Center(child: CircularProgressIndicator());
-            }));
+    return const Scaffold(
+        body: Login());
   }
 }
