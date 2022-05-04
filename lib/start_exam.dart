@@ -23,6 +23,7 @@ class _StartExamState extends State<StartExam> {
   @override
   initState()  {
     super.initState();
+    fetch();
     getLocation();
   }
 
@@ -53,23 +54,62 @@ class _StartExamState extends State<StartExam> {
     });
     return displayname;
   }
+
+    List questions = [];
+
+    fetch() async {
+    dynamic result = await getquestions();
+    if (result != null) {
+      setState(() {
+        questions = result;
+      });
+    } else {
+      print("unable to retrieve");
+    }
+  }
+    Future getquestions() async {
+    var collection = FirebaseFirestore.instance.collection('questions');
+    var querySnapshot = await collection.get();
+    var result = [];
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      data['id'] = queryDocumentSnapshot.id;
+      result.add(data );
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-     body:FutureBuilder(
-       future: getLocation(),
-       builder: (context, snapshot) {
-         if (snapshot.hasData) {
-           return Center(
-             child: Text(displayName),
-           );
-         } else {
-           return const Center(
-             child: CircularProgressIndicator(),
-           );
-         }
-       },
-     )
-   );
+    return Scaffold(
+      body: FutureBuilder(
+        future:  getquestions(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.done){
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text("Vragen van het examen"),
+              ),
+              body: ListView.builder(
+                itemCount: questions.length,
+                itemBuilder: (context,index) {
+                  return Card(
+                    child: ListTile(
+                      trailing: const CircleAvatar(
+                        child: Icon(Icons.edit),
+                      ),
+                      title: Text("Question: " + questions[index]["question"]),
+                      
+                    
+                    ),
+                  );
+                } 
+              )
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        }
+      ),
+    );
   }
 }
