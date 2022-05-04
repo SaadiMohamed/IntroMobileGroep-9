@@ -20,11 +20,6 @@ class AddStudents extends StatelessWidget {
       animatedIconTheme: const IconThemeData(size: 30),
       children: [
         SpeedDialChild(
-            onTap: () {},
-            child: const Icon(Icons.add),
-            label: "Add manually",
-            backgroundColor: Colors.red),
-        SpeedDialChild(
             onTap: () {
               Navigator.push(
                   context,
@@ -108,6 +103,18 @@ class AddStudents extends StatelessWidget {
                 child: const Text('Submit', style: TextStyle(fontSize: 22)),
               )),
         ]),
-        floatingActionButton: _speedDial(context));
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ViewStudents()));
+          },
+          child: Icon(Icons.people_alt_sharp),
+          backgroundColor: Colors.orange,
+
+        ));
   }
 }
+
