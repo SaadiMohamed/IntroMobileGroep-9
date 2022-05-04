@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/code_correction.dart';
 import 'package:project/multiplechoice.dart';
 import 'package:project/open.dart';
+import 'package:project/set_time.dart';
 
 class Makeexam extends StatefulWidget {
   const Makeexam({Key? key}) : super(key: key);
@@ -133,6 +134,29 @@ class _MakeexamState extends State<Makeexam> {
                               },
                               child: const Text(
                                 'Code correctie',
+                                style: TextStyle(fontSize: 22),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                              ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue,
+                                  onPrimary: Colors.white,
+                                  shadowColor: Colors.greenAccent,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(32.0)),
+                                  minimumSize: const Size(200, 80),
+                                  maximumSize: const Size(200, 80) //////// HERE
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SetTime()));
+                              },
+                              child: const Text(
+                                'Set Time',
                                 style: TextStyle(fontSize: 22),
                                 textAlign: TextAlign.center,
                               ),
