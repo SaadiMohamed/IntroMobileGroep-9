@@ -21,7 +21,7 @@ class CodeCorrection extends StatelessWidget{
             children: <Widget>[
               Expanded(
                 child:Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(20),
                   child: TextField(
                     maxLines: 10,
                     controller: tocomplete ,
@@ -56,7 +56,7 @@ class CodeCorrection extends StatelessWidget{
             ],
           ),
           Container(
-              padding: const EdgeInsets.fromLTRB(800, 20, 800, 15),
+              padding: const EdgeInsets.fromLTRB(400, 20, 400, 15),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
