@@ -39,7 +39,7 @@ class _MakeexamState extends State<Makeexam> {
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       data['id'] = queryDocumentSnapshot.id;
-      result.add(data );
+      result.add(data);
     }
     return result;
   }
@@ -60,7 +60,8 @@ class _MakeexamState extends State<Makeexam> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
-                            title: Text("Question: " + questions[index]["question"]),
+                            title: Text(
+                                "Question: " + questions[index]["question"]),
                             subtitle: questions[index]["type"] != 'opn'
                                 ? Text("Answer: " + questions[index]["answer"])
                                 : Text("This is an open question"),
@@ -83,15 +84,17 @@ class _MakeexamState extends State<Makeexam> {
                                   shadowColor: Colors.greenAccent,
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(32.0)),
                                   minimumSize: const Size(200, 80),
                                   maximumSize: const Size(200, 80) //////// HERE
-                              ),
+                                  ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MultipleChoice()));
+                                        builder: (context) =>
+                                            MultipleChoice()));
                               },
                               child: const Text('Multiple Choice',
                                   style: TextStyle(fontSize: 22)),
@@ -112,8 +115,8 @@ class _MakeexamState extends State<Makeexam> {
                                     MaterialPageRoute(
                                         builder: (context) => OpenQuestion()));
                               },
-                              child:
-                              const Text('Open vraag', style: TextStyle(fontSize: 22)),
+                              child: const Text('Open vraag',
+                                  style: TextStyle(fontSize: 22)),
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -122,15 +125,17 @@ class _MakeexamState extends State<Makeexam> {
                                   shadowColor: Colors.greenAccent,
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(32.0)),
                                   minimumSize: const Size(200, 80),
                                   maximumSize: const Size(200, 80) //////// HERE
-                              ),
+                                  ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CodeCorrection()));
+                                        builder: (context) =>
+                                            CodeCorrection()));
                               },
                               child: const Text(
                                 'Code correctie',
@@ -138,17 +143,18 @@ class _MakeexamState extends State<Makeexam> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                              ElevatedButton(
+                            ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.blue,
                                   onPrimary: Colors.white,
                                   shadowColor: Colors.greenAccent,
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(32.0)),
                                   minimumSize: const Size(200, 80),
                                   maximumSize: const Size(200, 80) //////// HERE
-                              ),
+                                  ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -169,5 +175,4 @@ class _MakeexamState extends State<Makeexam> {
               return const Center(child: CircularProgressIndicator());
             }));
   }
-  }
-
+}
