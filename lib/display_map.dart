@@ -15,7 +15,7 @@ class DisplayMap extends StatelessWidget {
 
   Future<String> address() async {
     String url =
-        "http://nominatim.openstreetmap.org/reverse?format=json&lat=${currentLocation.latitude}&lon=${currentLocation.longitude}&zoom=18&addressdetails=";
+        "http://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=";
     var response = await http.get(Uri.parse(url));
     var address = json.decode(response.body)["address"];
     var displayname = json.decode(response.body)["display_name"];
@@ -25,7 +25,7 @@ class DisplayMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text()),
+        appBar: AppBar(title: Text("")),
         body: Container(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 100),
           child: FlutterMap(
