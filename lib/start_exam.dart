@@ -5,6 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:project/code_corretion_antwoord.dart';
+import 'package:project/open_antwoord.dart';
+
+import 'mtp_antwoord.dart';
+
 
 class StartExam extends StatefulWidget {
   StartExam({required Key? key, required this.snummer}) : super(key: key);
@@ -95,6 +100,30 @@ class _StartExamState extends State<StartExam> {
                 itemBuilder: (context,index) {
                   return Card(
                     child: ListTile(
+                      onTap: () =>{
+                        if(questions[index]["type"] == "opn"){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  OpenAntwoord(question: questions[index], key: null,),
+                    ),
+                          ),}
+                        else if(questions[index]["type"] == "mtp"){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MtpAntwoord(question: questions[index], key: null,),
+                    ))}
+                    else if(questions[index]["type"] == "ccr"){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CodeCorrection(question: questions[index], key: null,),
+                            ))}
+                      },
                       trailing: const CircleAvatar(
                         child: Icon(Icons.edit),
                       ),
