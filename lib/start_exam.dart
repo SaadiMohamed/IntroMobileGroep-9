@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
-import 'package:latlong2/latlong.dart' as ll;
-import 'package:project/display_map.dart';
+import 'package:project/code_corretion_antwoord.dart';
+import 'package:project/open_antwoord.dart';
+
+import 'mtp_antwoord.dart';
 
 class StartExam extends StatefulWidget {
   StartExam({required Key? key, required this.snummer}) : super(key: key);
@@ -85,20 +82,66 @@ class _StartExamState extends State<StartExam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder(
-            future: future,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return DisplayMap(
-                  latitude: lat!,
-                  longitude: lng!,
-                  key: null,
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }));
+      body: FutureBuilder(
+          future: getquestions(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Scaffold(
+                  appBar: AppBar(
+                    title: const Text("Vragen van het examen"),
+                  ),
+                  body: ListView.builder(
+                      itemCount: questions.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            onTap: () => {
+                              if (questions[index]["type"] == "opn")
+                                {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OpenAntwoord(
+                                        question: questions[index],
+                                        key: null,
+                                      ),
+                                    ),
+                                  ),
+                                }
+                              else if (questions[index]["type"] == "mtp")
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MtpAntwoord(
+                                          question: questions[index],
+                                          key: null,
+                                        ),
+                                      ))
+                                }
+                              else if (questions[index]["type"] == "ccr")
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CodeCorrection(
+                                          question: questions[index],
+                                          key: null,
+                                        ),
+                                      ))
+                                }
+                            },
+                            trailing: const CircleAvatar(
+                              child: Icon(Icons.edit),
+                            ),
+                            title: Text(
+                                "Question: " + questions[index]["question"]),
+                          ),
+                        );
+                      }));
+            }
+            return const Center(child: CircularProgressIndicator());
+          }),
+    );
   }
 }
