@@ -39,11 +39,13 @@ class _MainscreenStudentState extends State<MainscreenStudent> {
     var result = [];
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
+      data["snummer"] = queryDocumentSnapshot.id;
       result.add(data);
     }
     return result;
   }
-Location location = Location();
+
+  Location location = Location();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ Location location = Location();
           },
           items: students.map((dynamic student) {
             return DropdownMenuItem(
-              child: Text(student['snumber'] +
+              child: Text(student['snummer'] +
                   " " +
                   student['firstname'] +
                   " " +
@@ -71,9 +73,8 @@ Location location = Location();
           }).toList(),
         )),
         Container(
-          padding: EdgeInsets.fromLTRB(400,50, 400, 0),
+          padding: EdgeInsets.fromLTRB(400, 50, 400, 0),
           child: ElevatedButton(
-
             style: ElevatedButton.styleFrom(
                 primary: Colors.blue,
                 onPrimary: Colors.white,
@@ -89,7 +90,12 @@ Location location = Location();
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => StartExam(snummer: valueChoose["snumber"], key: null,)));
+                      builder: (context) => StartExam(
+                            snummer: valueChoose["snummer"],
+                            firstname: valueChoose["firstname"],
+                            lastname: valueChoose["lastname"],
+                            key: null,
+                          )));
             },
           ),
         )

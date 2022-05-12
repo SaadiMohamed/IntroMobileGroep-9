@@ -3,20 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:project/code_corretion_antwoord.dart';
 import 'package:project/open_antwoord.dart';
+import 'package:project/overview.dart';
 
 import 'mtp_antwoord.dart';
 
 class StartExam extends StatefulWidget {
-  StartExam({required Key? key, required this.snummer}) : super(key: key);
+  StartExam(
+      {required Key? key,
+      required this.snummer,
+      required this.firstname,
+      required this.lastname})
+      : super(key: key);
   final String snummer;
+  final String firstname;
+  final String lastname;
 
   @override
-  _StartExamState createState() => _StartExamState(this.snummer);
+  _StartExamState createState() =>
+      _StartExamState(this.snummer, this.firstname, this.lastname);
 }
 
 class _StartExamState extends State<StartExam> {
-  _StartExamState(this.snummer);
+  _StartExamState(this.snummer, this.firstname, this.lastname);
   final String snummer;
+  final String firstname;
+  final String lastname;
 
   Location location = Location();
   double? lat = 50;
@@ -51,6 +62,15 @@ class _StartExamState extends State<StartExam> {
       lat = currentLocation.latitude;
       lng = currentLocation.longitude;
     });
+    CollectionReference taken = FirebaseFirestore.instance.collection('taken');
+    taken.doc(snummer).set(
+      {
+        'lat': lat,
+        'lng': lng,
+        'firstname': firstname,
+        'lastname': lastname,
+      },
+    );
     return;
   }
 
@@ -74,6 +94,7 @@ class _StartExamState extends State<StartExam> {
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       data['id'] = queryDocumentSnapshot.id;
+      data['studentAnswer'] = "";
       result.add(data);
     }
     return result;
@@ -82,66 +103,23 @@ class _StartExamState extends State<StartExam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-          future: getquestions(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Scaffold(
-                  appBar: AppBar(
-                    title: const Text("Vragen van het examen"),
-                  ),
-                  body: ListView.builder(
-                      itemCount: questions.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            onTap: () => {
-                              if (questions[index]["type"] == "opn")
-                                {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => OpenAntwoord(
-                                        question: questions[index],
-                                        key: null,
-                                      ),
-                                    ),
-                                  ),
-                                }
-                              else if (questions[index]["type"] == "mtp")
-                                {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MtpAntwoord(
-                                          question: questions[index],
-                                          key: null,
-                                        ),
-                                      ))
-                                }
-                              else if (questions[index]["type"] == "ccr")
-                                {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CodeCorrection(
-                                          question: questions[index],
-                                          key: null,
-                                        ),
-                                      ))
-                                }
-                            },
-                            trailing: const CircleAvatar(
-                              child: Icon(Icons.edit),
-                            ),
-                            title: Text(
-                                "Question: " + questions[index]["question"]),
-                          ),
-                        );
-                      }));
-            }
-            return const Center(child: CircularProgressIndicator());
-          }),
-    );
+        appBar: AppBar(
+          title: const Text("Start me examen"),
+        ),
+        body: ElevatedButton(
+          child: Text("Start examen"),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Overview(
+                  snummer: snummer,
+                  questions: questions,
+                  key: null,
+                ),
+              ),
+            );
+          },
+        ));
   }
 }
