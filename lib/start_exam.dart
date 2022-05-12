@@ -1,35 +1,44 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 import 'package:project/code_corretion_antwoord.dart';
 import 'package:project/open_antwoord.dart';
+import 'package:project/overview.dart';
 
 import 'mtp_antwoord.dart';
 
-
 class StartExam extends StatefulWidget {
-  StartExam({required Key? key, required this.snummer}) : super(key: key);
+  StartExam(
+      {required Key? key,
+      required this.snummer,
+      required this.firstname,
+      required this.lastname})
+      : super(key: key);
   final String snummer;
+  final String firstname;
+  final String lastname;
 
   @override
-  _StartExamState createState() => _StartExamState(this.snummer);
+  _StartExamState createState() =>
+      _StartExamState(this.snummer, this.firstname, this.lastname);
 }
 
 class _StartExamState extends State<StartExam> {
-  _StartExamState(this.snummer);
+  _StartExamState(this.snummer, this.firstname, this.lastname);
   final String snummer;
+  final String firstname;
+  final String lastname;
 
   Location location = Location();
-  String displayName ="";
+  double? lat = 50;
+  double? lng = 4;
+  String displayName = "";
+  late Future future;
   @override
-  initState()  {
+  initState() {
+    future = getLocation();
     super.initState();
     fetch();
-    getLocation();
   }
 
   Future getLocation() async {
@@ -49,20 +58,25 @@ class _StartExamState extends State<StartExam> {
       }
     }
     var currentLocation = await location.getLocation();
-    String url =
-        "http://nominatim.openstreetmap.org/reverse?format=json&lat=${currentLocation.latitude}&lon=${currentLocation.longitude}&zoom=18&addressdetails=";
-    var response = await http.get(Uri.parse(url));
-    var address = json.decode(response.body)["address"];
-    var displayname = json.decode(response.body)["display_name"];
     setState(() {
-      displayName = displayname;
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
     });
-    return displayname;
+    CollectionReference taken = FirebaseFirestore.instance.collection('taken');
+    taken.doc(snummer).set(
+      {
+        'lat': lat,
+        'lng': lng,
+        'firstname': firstname,
+        'lastname': lastname,
+      },
+    );
+    return;
   }
 
-    List questions = [];
+  List questions = [];
 
-    fetch() async {
+  fetch() async {
     dynamic result = await getquestions();
     if (result != null) {
       setState(() {
@@ -72,14 +86,16 @@ class _StartExamState extends State<StartExam> {
       print("unable to retrieve");
     }
   }
-    Future getquestions() async {
+
+  Future getquestions() async {
     var collection = FirebaseFirestore.instance.collection('questions');
     var querySnapshot = await collection.get();
     var result = [];
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       data['id'] = queryDocumentSnapshot.id;
-      result.add(data );
+      data['studentAnswer'] = "";
+      result.add(data);
     }
     return result;
   }
@@ -87,58 +103,23 @@ class _StartExamState extends State<StartExam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future:  getquestions(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.done){
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text("Vragen van het examen"),
+        appBar: AppBar(
+          title: const Text("Start me examen"),
+        ),
+        body: ElevatedButton(
+          child: Text("Start examen"),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Overview(
+                  snummer: snummer,
+                  questions: questions,
+                  key: null,
+                ),
               ),
-              body: ListView.builder(
-                itemCount: questions.length,
-                itemBuilder: (context,index) {
-                  return Card(
-                    child: ListTile(
-                      onTap: () =>{
-                        if(questions[index]["type"] == "opn"){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  OpenAntwoord(question: questions[index], key: null,),
-                    ),
-                          ),}
-                        else if(questions[index]["type"] == "mtp"){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MtpAntwoord(question: questions[index], key: null,),
-                    ))}
-                    else if(questions[index]["type"] == "ccr"){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CodeCorrection(question: questions[index], key: null,),
-                            ))}
-                      },
-                      trailing: const CircleAvatar(
-                        child: Icon(Icons.edit),
-                      ),
-                      title: Text("Question: " + questions[index]["question"]),
-                      
-                    
-                    ),
-                  );
-                } 
-              )
             );
-          }
-          return const Center(child: CircularProgressIndicator());
-        }
-      ),
-    );
+          },
+        ));
   }
 }

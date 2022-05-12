@@ -66,7 +66,9 @@ class _SetTimeState extends State<SetTime> {
                 ? Text('Time not selected')
                 : Text('Selected Time: ${end?.hour}:${end?.minute}'),
           ],
-        ),
+        ),Container(
+              padding: const EdgeInsets.fromLTRB(400, 120, 400, 15),
+    child:
               ElevatedButton(
               style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
@@ -83,19 +85,19 @@ class _SetTimeState extends State<SetTime> {
                   'start': '${start?.hour}:${start?.minute}',
                   'end': '${end?.hour}:${end?.minute}',
                 }).then((value) {
-                  Navigator.push(
+                  Navigator.pop(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Makeexam() ));
                 });
               },
               child: const Text(
-                'Add',
+                'Save',
                 style: TextStyle(fontSize: 22),
                 textAlign: TextAlign.center,
               ),
             )
-        ]),
+          )]),
         
     );
   }
