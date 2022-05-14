@@ -46,7 +46,7 @@ class _ViewStudents extends State<ViewStudents> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("View Students"),
+          title: const Text("Studenten"),
         ),
         body: ListView.builder(
             itemCount: students.length,
@@ -65,11 +65,11 @@ class _ViewStudents extends State<ViewStudents> {
                       );
                     },
                     leading: const CircleAvatar(child: Icon(Icons.person)),
-                    title: Text("Name: " +
+                    title: Text("Naam: " +
                         students[index]["firstname"] +
                         " " +
                         students[index]["lastname"]),
-                    subtitle: Text("snummer: " + students[index]["snummer"])),
+                    subtitle: Text("s-nummer: " + students[index]["snummer"])),
               );
             }));
   }

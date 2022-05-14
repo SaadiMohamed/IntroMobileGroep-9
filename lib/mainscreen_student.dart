@@ -55,7 +55,7 @@ class _MainscreenStudentState extends State<MainscreenStudent> {
         Center(
             child: DropdownButton(
           value: valueChoose,
-          hint: const Text("Select your name"),
+          hint: const Text("Selecteer je naam"),
           onChanged: (newValue) {
             setState(() {
               valueChoose = newValue;
@@ -85,7 +85,7 @@ class _MainscreenStudentState extends State<MainscreenStudent> {
                 minimumSize: const Size(40, 80),
                 maximumSize: const Size(40, 80) //////// HERE
                 ),
-            child: const Text("Confirm"),
+            child: const Text("Bevestig"),
             onPressed: () {
               Navigator.push(
                   context,

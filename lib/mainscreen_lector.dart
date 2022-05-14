@@ -65,7 +65,7 @@ class _Login extends State<Login> {
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                   border: OutlineInputBorder(),
-                  labelText: 'Username',
+                  labelText: 'Gebruikersnaam',
                 ),
               ),
             ),
@@ -77,7 +77,7 @@ class _Login extends State<Login> {
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.lock, color: Colors.black),
                   border: OutlineInputBorder(),
-                  labelText: 'Password',
+                  labelText: 'Wachtwoord',
                 ),
               ),
             ),

@@ -16,7 +16,7 @@ class _ExammenuLectorState extends State<ExammenuLector> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Exam Menu'),
+          title: const Text('Examen menu'),
         ),
         body: Center(
           child: Row(
