@@ -32,7 +32,7 @@ class _CorrectExamState extends State<CorrectExam> {
     for (var item in information["answers"]) {
       if (item["type"] == "opn") {
         item["score"] = 0;
-        item["max"] = 0;
+        item["done"] = false;
         opns.add(item);
       } else if (item["type"] == "mtp") {
         if (item["answer"].toString() == item["studentAnswer"].toString()) {

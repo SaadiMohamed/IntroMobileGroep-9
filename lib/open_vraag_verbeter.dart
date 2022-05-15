@@ -47,10 +47,10 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
           itemBuilder: (context, index) {
             return Card(
                 child: ListTile(
-                    trailing: information["opns"][index]["max"] != 0
+                    trailing: information["opns"][index]["done"] != false
                         ? const Icon(Icons.check)
                         : const Icon(Icons.close),
-                    iconColor: information["opns"][index]["max"] != 0
+                    iconColor: information["opns"][index]["done"] != false
                         ? Colors.green
                         : Colors.red,
                     onTap: () {

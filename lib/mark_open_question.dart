@@ -20,8 +20,6 @@ class _MarkOpenQuestion extends State<MarkOpenQuestion> {
   @override
   Widget build(BuildContext context) {
     TextEditingController score = TextEditingController();
-    TextEditingController max = TextEditingController();
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("Open vraag verbeteren"),
@@ -31,6 +29,8 @@ class _MarkOpenQuestion extends State<MarkOpenQuestion> {
             children: <Widget>[
               Text(information["opns"][index]["question"]),
               Text(information["opns"][index]["studentAnswer"]),
+              Text(
+                  "Max score: " + information["opns"][index]["max"].toString()),
               TextField(
                 controller: score,
                 keyboardType: TextInputType.number,
@@ -38,18 +38,11 @@ class _MarkOpenQuestion extends State<MarkOpenQuestion> {
                   labelText: "Score",
                 ),
               ),
-              TextField(
-                controller: max,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: "Max",
-                ),
-              ),
               RaisedButton(
                 child: Text("Save"),
                 onPressed: () {
                   information["opns"][index]["score"] = int.parse(score.text);
-                  information["opns"][index]["max"] = int.parse(max.text);
+                  information["opns"][index]["done"] = true;
                   Navigator.push(
                       context,
                       MaterialPageRoute(

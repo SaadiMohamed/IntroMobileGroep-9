@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/correct_exam.dart';
+import 'package:project/exammenu_lector.dart';
 
 class ViewStudents extends StatefulWidget {
   const ViewStudents({Key? key}) : super(key: key);
@@ -57,9 +58,33 @@ class _ViewStudents extends State<ViewStudents> {
                     title: const Text("Studenten"),
                   ),
                   body: students.isEmpty
-                      ? Container(
-                          child: const Text("Geen examens om te verbeteren"),
-                        )
+                      ? Center(
+                          child: Container(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                shadowColor: Colors.greenAccent,
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0)),
+                                minimumSize: const Size(200, 150),
+                                maximumSize: const Size(200, 150) //////// HERE
+                                ),
+                            child: const Text(
+                              "Go back",
+                              style: TextStyle(fontSize: 22),
+                              textAlign: TextAlign.center,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ExammenuLector(key: null)));
+                            },
+                          ),
+                        ))
                       : ListView.builder(
                           itemCount: students.length,
                           itemBuilder: (context, index) {
