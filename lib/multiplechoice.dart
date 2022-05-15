@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'make_exam.dart';
+
 class MultipleChoice extends StatelessWidget {
   CollectionReference questions =
       FirebaseFirestore.instance.collection('questions');
   final TextEditingController question = TextEditingController();
   final TextEditingController answer = TextEditingController();
   final TextEditingController options = TextEditingController();
-
 
   MultipleChoice({Key? key}) : super(key: key);
   @override
@@ -51,9 +52,8 @@ class MultipleChoice extends StatelessWidget {
               child: TextField(
                 controller: options,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Options separated by a ;'
-                ),
+                    border: OutlineInputBorder(),
+                    labelText: 'Options separated by a ;'),
               ),
             ),
             Container(
@@ -70,41 +70,46 @@ class MultipleChoice extends StatelessWidget {
                       maximumSize: const Size(100, 80) //////// HERE
                       ),
                   onPressed: () {
-                    if(question.text.trim().isEmpty || answer.text.trim().isEmpty || options.text.trim().isEmpty)
-                      {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              Future.delayed(const Duration(seconds: 3), () {
-                                Navigator.of(context).pop(true);
-                              });
-                              return const AlertDialog(
-                                title: Text('Fill in all fields before submitting'),
-                              );
+                    if (question.text.trim().isEmpty ||
+                        answer.text.trim().isEmpty ||
+                        options.text.trim().isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(const Duration(seconds: 3), () {
+                              Navigator.of(context).pop(true);
                             });
-                      }
-                    else{
-                    questions
-                        .add({
-                          'question': question.text,
-                          'answer': answer.text,
-                          'options': options.text,
-                          'type': 'mtp'
-
-                        })
-                        .then((value) => showDialog(
-                            context: context,
-                            builder: (context) {
-                              Future.delayed(const Duration(seconds: 3), () {
-                                Navigator.of(context).pop(true);
-                              });
-                              return const AlertDialog(
-                                title: Text('Question Added'),
-                              );
-                            }))
-                        .catchError(
-                            (error) => print("Failed to add user: $error"));
-                  }},
+                            return const AlertDialog(
+                              title:
+                                  Text('Fill in all fields before submitting'),
+                            );
+                          });
+                    } else {
+                      questions
+                          .add({
+                            'question': question.text,
+                            'answer': answer.text,
+                            'options': options.text,
+                            'type': 'mtp'
+                          })
+                          .then((value) => showDialog(
+                              context: context,
+                              builder: (context) {
+                                Future.delayed(const Duration(seconds: 3), () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Makeexam(),
+                                      ));
+                                });
+                                return const AlertDialog(
+                                  title: Text('Question Added'),
+                                );
+                              }))
+                          .catchError(
+                              (error) => print("Failed to add user: $error"));
+                    }
+                  },
                   child: const Text('Save'),
                 ))
           ],

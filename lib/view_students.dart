@@ -37,7 +37,10 @@ class _ViewStudents extends State<ViewStudents> {
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       data["snummer"] = queryDocumentSnapshot.id;
-      result.add(data);
+      data["score"] = 0;
+      if (data["done"] != true) {
+        result.add(data);
+      }
     }
     return result;
   }
@@ -45,32 +48,52 @@ class _ViewStudents extends State<ViewStudents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Studenten"),
-        ),
-        body: ListView.builder(
-            itemCount: students.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CorrectExam(
-                            information: students[index],
-                            key: null,
-                          ),
-                        ),
-                      );
-                    },
-                    leading: const CircleAvatar(child: Icon(Icons.person)),
-                    title: Text("Naam: " +
-                        students[index]["firstname"] +
-                        " " +
-                        students[index]["lastname"]),
-                    subtitle: Text("s-nummer: " + students[index]["snummer"])),
-              );
-            }));
+      body: FutureBuilder(
+          future: getStudents(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Scaffold(
+                  appBar: AppBar(
+                    title: const Text("Studenten"),
+                  ),
+                  body: students.isEmpty
+                      ? Container(
+                          child: const Text("Geen examens om te verbeteren"),
+                        )
+                      : ListView.builder(
+                          itemCount: students.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                  onTap: students[index]["done"] == null ||
+                                          students[index]["done"] == false
+                                      ? () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => CorrectExam(
+                                                information: students[index],
+                                                key: null,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      : () {
+                                          print(students[index]["done"]);
+                                        },
+                                  leading: const CircleAvatar(
+                                      child: Icon(Icons.person)),
+                                  title: Text("Naam: " +
+                                      students[index]["firstname"] +
+                                      " " +
+                                      students[index]["lastname"]),
+                                  subtitle: Text("s-nummer: " +
+                                      students[index]["snummer"])),
+                            );
+                          }));
+            }
+            return const Center(child: CircularProgressIndicator());
+          }),
+    );
   }
 }
