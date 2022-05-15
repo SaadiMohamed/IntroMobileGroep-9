@@ -39,6 +39,7 @@ class _ViewStudents extends State<ViewStudents> {
       data["snummer"] = queryDocumentSnapshot.id;
       if (data["done"] != true) {
         result.add(data);
+        print(data["score"]);
       }
     }
     return result;

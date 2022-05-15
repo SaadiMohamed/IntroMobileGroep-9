@@ -24,7 +24,7 @@ class _CorrectExamState extends State<CorrectExam> {
     getOpenQuestion();
   }
 
-  getOpenQuestion() async {
+  getOpenQuestion() {
     var collection = FirebaseFirestore.instance.collection('taken');
     int score = 0;
     int total = 0;
@@ -55,6 +55,8 @@ class _CorrectExamState extends State<CorrectExam> {
       'total': total,
     });
 
+    information["score"] = score;
+    information["total"] = total;
     information["opns"] = opns;
   }
 
