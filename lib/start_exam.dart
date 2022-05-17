@@ -109,15 +109,18 @@ class _StartExamState extends State<StartExam> {
         body: ElevatedButton(
           child: Text("Start examen"),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                builder: (context) => Overview(
-                  snummer: snummer,
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => Overview(
                   questions: questions,
+                  snummer: snummer,
                   key: null,
                 ),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
               ),
+              (Route<dynamic> route) => false,
             );
           },
         ));

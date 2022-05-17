@@ -96,11 +96,11 @@ class MultipleChoice extends StatelessWidget {
                               context: context,
                               builder: (context) {
                                 Future.delayed(const Duration(seconds: 3), () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const Makeexam(),
-                                      ));
+                                          builder: (BuildContext context) =>
+                                              Makeexam()));
                                 });
                                 return const AlertDialog(
                                   title: Text('Question Added'),

@@ -42,7 +42,7 @@ class _OverviewState extends State<Overview> {
                 FirebaseFirestore.instance.collection("students");
             students.doc(snummer).delete();
 
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => MyApp()),
             );

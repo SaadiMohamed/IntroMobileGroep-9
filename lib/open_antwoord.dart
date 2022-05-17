@@ -37,7 +37,6 @@ class _OpenAntwoordState extends State<OpenAntwoord> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Open vraag'),
-          automaticallyImplyLeading: false,
         ),
         body: ListView(
           children: [
@@ -79,14 +78,19 @@ class _OpenAntwoordState extends State<OpenAntwoord> {
                       ),
                   onPressed: () {
                     questions[index]["studentAnswer"] = _controller.text;
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => Overview(
-                                snummer: snummer,
-                                key: null,
-                                questions: questions,
-                              )),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) =>
+                            Overview(
+                          snummer: snummer,
+                          key: null,
+                          questions: questions,
+                        ),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                      (Route<dynamic> route) => false,
                     );
                   },
                   child: const Text("Save"),

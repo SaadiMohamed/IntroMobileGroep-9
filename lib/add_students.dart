@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:project/exammenu_lector.dart';
 import 'package:project/view_students.dart';
+
+import 'make_exam.dart';
 
 class AddStudents extends StatelessWidget {
   Widget manually(BuildContext context) {
@@ -51,6 +54,8 @@ class AddStudents extends StatelessWidget {
               onPressed: () {
                 var add = true;
                 var studentsinfo = _csvcontroller.text.trim().split("\n");
+                //delete all students
+
                 for (var i in studentsinfo) {
                   if (i.split(",").length != 3) {
                     add = false;
@@ -70,12 +75,19 @@ class AddStudents extends StatelessWidget {
                 }
 
                 if (add) {
-                  studentsinfo.forEach((element) {
-                    List<String> info = element.split(",");
-                    students
-                        .doc(info[0])
-                        .set({"firstname": info[1], "lastname": info[2]});
-                  });
+                  students.get().then((snapshot) => {
+                        snapshot.docs.forEach((f) {
+                          f.reference.delete();
+                        }),
+                        studentsinfo.forEach((element) {
+                          List<String> info = element.split(",");
+                          students
+                              .doc(info[0])
+                              .set({"firstname": info[1], "lastname": info[2]});
+                        })
+                      });
+
+                  Navigator.pop(context);
                 }
               },
               child: const Text('Submit', style: TextStyle(fontSize: 22)),

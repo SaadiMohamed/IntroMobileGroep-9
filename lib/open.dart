@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/exammenu_lector.dart';
 
 import 'make_exam.dart';
 
@@ -79,10 +80,11 @@ class OpenQuestion extends StatelessWidget {
                             'type': 'opn',
                             'max': int.parse(max.text)
                           })
-                          .then((value) => Navigator.push(
+                          .then((value) => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Makeexam())))
+                                  builder: (BuildContext context) =>
+                                      Makeexam())))
                           .catchError(
                               (error) => print("Failed to add user: $error"));
                     }

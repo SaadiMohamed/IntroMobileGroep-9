@@ -44,7 +44,6 @@ class _MtpAntwoordState extends State<MtpAntwoord> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Multiple question'),
-        automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [
@@ -87,15 +86,19 @@ class _MtpAntwoordState extends State<MtpAntwoord> {
                     ),
                 onPressed: () {
                   questions[index]['studentAnswer'] = answer;
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => Overview(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          Overview(
                         snummer: snummer,
                         key: null,
                         questions: questions,
                       ),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
                     ),
+                    (Route<dynamic> route) => false,
                   );
                 },
                 child: const Text("Save"),
