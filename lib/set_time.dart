@@ -9,21 +9,21 @@ class SetTime extends StatefulWidget {
 }
 
 class _SetTimeState extends State<SetTime> {
-
   var time = FirebaseFirestore.instance.collection('time');
-
+  TextEditingController _duration = TextEditingController();
   TimeOfDay? start;
   TimeOfDay? end;
+  int duration = 0;
   Future<void> _selectTime(BuildContext context, bool choice) async {
     final TimeOfDay? t = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
       builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
           child: child ?? Container(),
-          );
-        },
+        );
+      },
     );
 
     if (t != null) {
@@ -43,12 +43,11 @@ class _SetTimeState extends State<SetTime> {
       appBar: AppBar(
         title: Text('Set Time'),
       ),
-      body: ListView(
-        children: <Widget>[
-         Row(
+      body: ListView(children: <Widget>[
+        Row(
           children: [
             ElevatedButton(
-              onPressed: () => _selectTime(context,true),
+              onPressed: () => _selectTime(context, true),
               child: Text('Start Time'),
             ),
             start == null
@@ -66,10 +65,15 @@ class _SetTimeState extends State<SetTime> {
                 ? Text('Time not selected')
                 : Text('Selected Time: ${end?.hour}:${end?.minute}'),
           ],
-        ),Container(
-              padding: const EdgeInsets.fromLTRB(400, 120, 400, 15),
-    child:
-              ElevatedButton(
+        ),
+        TextField(
+            controller: _duration,
+            decoration: InputDecoration(
+              labelText: 'Duration in minutes',
+            )),
+        Container(
+            padding: const EdgeInsets.fromLTRB(400, 120, 400, 15),
+            child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
                   onPrimary: Colors.white,
@@ -79,16 +83,15 @@ class _SetTimeState extends State<SetTime> {
                       borderRadius: BorderRadius.circular(32.0)),
                   minimumSize: const Size(100, 80),
                   maximumSize: const Size(100, 80) //////// HERE
-              ),
+                  ),
               onPressed: () {
                 time.doc('time').set({
                   'start': '${start?.hour}:${start?.minute}',
                   'end': '${end?.hour}:${end?.minute}',
+                  'duration': _duration.text
                 }).then((value) {
-                  Navigator.pop(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Makeexam() ));
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => Makeexam()));
                 });
               },
               child: const Text(
@@ -96,9 +99,8 @@ class _SetTimeState extends State<SetTime> {
                 style: TextStyle(fontSize: 22),
                 textAlign: TextAlign.center,
               ),
-            )
-          )]),
-        
+            ))
+      ]),
     );
   }
 }
