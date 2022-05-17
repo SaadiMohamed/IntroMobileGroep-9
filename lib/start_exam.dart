@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -122,9 +124,15 @@ class _StartExamState extends State<StartExam> {
             if (snapshot.connectionState == ConnectionState.done) {
               return ListView(
                 children: [
-                  Text("You have ${duration} minutes to complete this exam"),
                   Container(
-                    padding: EdgeInsets.fromLTRB(350, 0, 350, 0),
+                    padding: const EdgeInsets.fromLTRB(350, 0, 350, 100),
+                    child: Text(
+                      "Welkom ${firstname} ${lastname} you have $duration for this exam",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(350, 0, 350, 0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -148,6 +156,7 @@ class _StartExamState extends State<StartExam> {
                                 Overview(
                               questions: questions,
                               snummer: snummer,
+                              duration: duration * 60,
                               key: null,
                             ),
                             transitionDuration: Duration.zero,

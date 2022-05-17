@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,43 +11,96 @@ import 'mtp_antwoord.dart';
 import 'open_antwoord.dart';
 
 class Overview extends StatefulWidget {
-  Overview({required Key? key, required this.questions, required this.snummer})
+  Overview(
+      {required Key? key,
+      required this.questions,
+      required this.snummer,
+      required this.duration})
       : super(key: key);
 
   dynamic questions;
   String snummer;
+  int duration;
 
   @override
-  _OverviewState createState() => _OverviewState(questions, snummer);
+  _OverviewState createState() => _OverviewState(questions, snummer, duration);
 }
 
 class _OverviewState extends State<Overview> {
-  _OverviewState(this.questions, this.snummer);
+  _OverviewState(this.questions, this.snummer, this.duration);
   String snummer;
   dynamic questions;
+
+  int duration;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startTimer();
+  }
+
+  late Timer _timer;
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (duration == 0) {
+          setState(() {
+            timer.cancel();
+          });
+          indienen();
+        } else {
+          setState(() {
+            duration--;
+          });
+        }
+      },
+    );
+  }
+
+  formatedTime() {
+    String getParsedTime(String time) {
+      if (time.length <= 1) return "0$time";
+      return time;
+    }
+
+    int min = duration ~/ 60;
+    int sec = duration % 60;
+
+    String parsedTime =
+        getParsedTime(min.toString()) + " : " + getParsedTime(sec.toString());
+
+    return parsedTime;
+  }
+
+  indienen() {
+    CollectionReference taken = FirebaseFirestore.instance.collection('taken');
+    taken.doc(snummer).update({
+      'answers': questions,
+    });
+
+    CollectionReference students =
+        FirebaseFirestore.instance.collection("students");
+    students.doc(snummer).delete();
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Vragen van het examen"),
+          title: Text(
+              "Vragen van het examen                                                                        ${formatedTime()}"),
         ),
         floatingActionButton: ElevatedButton(
           onPressed: () {
-            CollectionReference taken =
-                FirebaseFirestore.instance.collection('taken');
-            taken.doc(snummer).update({
-              'answers': questions,
-            });
-
-            CollectionReference students =
-                FirebaseFirestore.instance.collection("students");
-            students.doc(snummer).delete();
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MyApp()),
-            );
+            indienen();
           },
           child: const Text("Indienen"),
         ),
@@ -61,6 +116,7 @@ class _OverviewState extends State<Overview> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => OpenAntwoord(
+                              duration: duration,
                               snummer: snummer,
                               index: index,
                               questions: questions,
@@ -75,6 +131,7 @@ class _OverviewState extends State<Overview> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MtpAntwoord(
+                                duration: duration,
                                 questions: questions,
                                 snummer: snummer,
                                 index: index,
@@ -88,6 +145,7 @@ class _OverviewState extends State<Overview> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CodeCorrection(
+                                  duration: duration,
                                   key: null,
                                   questions: questions,
                                   snummer: snummer,
