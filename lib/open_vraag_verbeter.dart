@@ -32,13 +32,14 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
               score += int.parse(item["score"].toString());
               total += int.parse(item["max"].toString());
             }
+            information["score"] = score;
             collection.doc(information["snummer"]).update({'score': score});
             collection.doc(information["snummer"]).update({'total': total});
-            collection.doc(information["snummer"]).update({'done': true});
-            Navigator.push(
+
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ViewStudents(key: null)));
+                    builder: (context) => CorrectExam(information: information,key: null)));
           },
           child: const Text("Indienen"),
         ),
@@ -54,7 +55,7 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
                         ? Colors.green
                         : Colors.red,
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MarkOpenQuestion(

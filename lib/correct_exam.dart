@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/display_map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project/view_students.dart';
 
 import 'open_vraag_verbeter.dart';
 
@@ -17,6 +18,7 @@ getOpen() {}
 class _CorrectExamState extends State<CorrectExam> {
   _CorrectExamState(this.information);
   dynamic information;
+  TextEditingController scoreController = TextEditingController();
 
   @override
   initState() {
@@ -29,7 +31,13 @@ class _CorrectExamState extends State<CorrectExam> {
     int score = 0;
     int total = 0;
     var opns = [];
+
+    if(information["opns"] != null){
+        scoreController.text = information["score"].toString();
+      return;
+    }
     for (var item in information["answers"]) {
+
       if (item["type"] == "opn") {
         item["score"] = 0;
         item["done"] = false;
@@ -48,6 +56,8 @@ class _CorrectExamState extends State<CorrectExam> {
         total++;
       }
     }
+
+    
     collection.doc(information["snummer"]).update({
       'score': score,
     });
@@ -55,9 +65,13 @@ class _CorrectExamState extends State<CorrectExam> {
       'total': total,
     });
 
+  
+     scoreController.text = score.toString();
     information["score"] = score;
     information["total"] = total;
     information["opns"] = opns;
+
+
   }
 
   @override
@@ -84,7 +98,18 @@ class _CorrectExamState extends State<CorrectExam> {
               )),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+              padding: const EdgeInsets.fromLTRB(350, 100, 350, 0),
+              child: Center(
+                child: TextFormField(
+                  controller: scoreController,
+                  decoration: const InputDecoration(
+                    labelText: "Verander de score"
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.max,
@@ -103,7 +128,7 @@ class _CorrectExamState extends State<CorrectExam> {
                         maximumSize: const Size(200, 120) //////// HERE
                         ),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => OpenVraagVerbeter(
@@ -155,7 +180,20 @@ class _CorrectExamState extends State<CorrectExam> {
                         minimumSize: const Size(200, 120),
                         maximumSize: const Size(200, 120) //////// HERE
                         ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        information['score'] = int.parse(scoreController.text);
+                      });
+                       var collection = FirebaseFirestore.instance.collection('taken');
+            collection.doc(information["snummer"]).update({'done': true});
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewStudents()
+                                )
+                      );
+                      
+                    },
                     child: const Text(
                       'Score opslaan',
                       style: TextStyle(fontSize: 22),
