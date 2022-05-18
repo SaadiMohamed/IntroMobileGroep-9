@@ -32,12 +32,11 @@ class _CorrectExamState extends State<CorrectExam> {
     int total = 0;
     var opns = [];
 
-    if(information["opns"] != null){
-        scoreController.text = information["score"].toString();
+    if (information["opns"] != null) {
+      scoreController.text = information["score"].toString();
       return;
     }
     for (var item in information["answers"]) {
-
       if (item["type"] == "opn") {
         item["score"] = 0;
         item["done"] = false;
@@ -57,7 +56,6 @@ class _CorrectExamState extends State<CorrectExam> {
       }
     }
 
-    
     collection.doc(information["snummer"]).update({
       'score': score,
     });
@@ -65,13 +63,10 @@ class _CorrectExamState extends State<CorrectExam> {
       'total': total,
     });
 
-  
-     scoreController.text = score.toString();
+    scoreController.text = score.toString();
     information["score"] = score;
     information["total"] = total;
     information["opns"] = opns;
-
-
   }
 
   @override
@@ -97,23 +92,25 @@ class _CorrectExamState extends State<CorrectExam> {
                 style: const TextStyle(fontSize: 20),
               )),
             ),
-            information['outOfFocus'].toString() != "0"?
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-              child: Center(
-                  child: Text(
-                "Aantal keren examen verlaten:" + information['outOfFocus'].toString(),
-                style: const TextStyle(fontSize: 20),
-              )),
-            ): const Text(""),
+            information['outOfFocus'].toString() != "0"
+                ? Container(
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: Center(
+                        child: Text(
+
+                      "Aantal keren examen verlaten:" +
+                          information['outOfFocus'].toString(),
+                      style: const TextStyle(fontSize: 20,color: Colors.red),
+                    )),
+                  )
+                : const Text(""),
             Container(
               padding: const EdgeInsets.fromLTRB(350, 50, 350, 0),
               child: Center(
                 child: TextFormField(
                   controller: scoreController,
-                  decoration: const InputDecoration(
-                    labelText: "Verander de score"
-                  ),
+                  decoration:
+                      const InputDecoration(labelText: "Verander de score"),
                 ),
               ),
             ),
@@ -137,7 +134,7 @@ class _CorrectExamState extends State<CorrectExam> {
                         maximumSize: const Size(200, 120) //////// HERE
                         ),
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => OpenVraagVerbeter(
@@ -190,19 +187,19 @@ class _CorrectExamState extends State<CorrectExam> {
                         maximumSize: const Size(200, 120) //////// HERE
                         ),
                     onPressed: () {
-                      
-                       var collection = FirebaseFirestore.instance.collection('taken');
-                      collection.doc(information["snummer"]).update({'done': true});
-                                collection.doc(information["snummer"]).update({
-                      'score': int.parse(scoreController.text),
-                    });
+                      var collection =
+                          FirebaseFirestore.instance.collection('taken');
+                      collection
+                          .doc(information["snummer"])
+                          .update({'done': true});
+                      collection.doc(information["snummer"]).update({
+                        'score': int.parse(scoreController.text),
+                      });
+                      Navigator.pop(context);
                       Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewStudents()
-                                )
-                      );
-                      
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewStudents()));
                     },
                     child: const Text(
                       'Score opslaan',

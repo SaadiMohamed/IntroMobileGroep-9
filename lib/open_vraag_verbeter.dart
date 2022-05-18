@@ -23,7 +23,7 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
         appBar: AppBar(
           title: const Text("Verbeter open vragen"),
         ),
-        floatingActionButton: ElevatedButton(
+        floatingActionButton: information["ingediend"] == null? ElevatedButton(
           onPressed: () async {
             var collection = FirebaseFirestore.instance.collection('taken');
             int score = int.parse(information["score"].toString());
@@ -33,16 +33,17 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
               total += int.parse(item["max"].toString());
             }
             information["score"] = score;
+            information["ingediend"] = true;
             collection.doc(information["snummer"]).update({'score': score});
             collection.doc(information["snummer"]).update({'total': total});
-
+            Navigator.pop(context);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => CorrectExam(information: information,key: null)));
           },
           child: const Text("Indienen"),
-        ),
+        ): null,
         body: ListView.builder(
           itemCount: information["opns"].length,
           itemBuilder: (context, index) {
@@ -55,7 +56,7 @@ class _OpenVraagVerbeter extends State<OpenVraagVerbeter> {
                         ? Colors.green
                         : Colors.red,
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MarkOpenQuestion(

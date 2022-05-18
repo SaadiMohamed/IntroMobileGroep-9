@@ -101,11 +101,9 @@ class _OverviewState extends State<Overview> with WidgetsBindingObserver {
   }
 
   indienen() {
+    _timer.cancel();
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
-    taken.doc(snummer).update({
-      'answers': questions,
-      "outOfFocus" : outFocus
-    });
+    taken.doc(snummer).update({'answers': questions, "outOfFocus": outFocus});
 
     CollectionReference students =
         FirebaseFirestore.instance.collection("students");

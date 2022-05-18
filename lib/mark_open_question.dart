@@ -43,6 +43,7 @@ class _MarkOpenQuestion extends State<MarkOpenQuestion> {
                 onPressed: () {
                   information["opns"][index]["score"] = int.parse(score.text);
                   information["opns"][index]["done"] = true;
+                  Navigator.pop(context);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

@@ -77,15 +77,10 @@ class _ViewStudents extends State<ViewStudents> {
                               textAlign: TextAlign.center,
                             ),
                             onPressed: () {
-                               Navigator.pushAndRemoveUntil(
+                              Navigator.pop(context);
+                               Navigator.pushReplacement(
                       context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            ExammenuLector(),
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                      (Route<dynamic> route) => false,
+                      MaterialPageRoute(builder: (context) => ExammenuLector()),
                     );
                             },
                           ),
