@@ -12,31 +12,56 @@ class CodeCorrection extends StatefulWidget {
       required this.questions,
       required this.index,
       required this.snummer,
-      required this.duration})
+      required this.duration,
+      required this.outFocus})
       : super(key: key);
   var questions;
   final int index;
   final String snummer;
   int duration;
+  int outFocus;
 
   @override
   _CodeCorrectionState createState() =>
-      _CodeCorrectionState(questions, index, snummer, duration);
+      _CodeCorrectionState(questions, index, snummer, duration, outFocus);
 }
 
-class _CodeCorrectionState extends State<CodeCorrection> {
+class _CodeCorrectionState extends State<CodeCorrection>
+    with WidgetsBindingObserver {
   var questions;
   final int index;
   final String snummer;
   int duration;
-
-  _CodeCorrectionState(this.questions, this.index, this.snummer, this.duration);
+  int outFocus;
+  _CodeCorrectionState(
+      this.questions, this.index, this.snummer, this.duration, this.outFocus);
   TextEditingController _controller = TextEditingController();
   @override
   void initState() {
     _controller.text = questions[index]['studentAnswer'];
     super.initState();
     startTimer();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      outFocus++;
+      print(outFocus);
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
   }
 
   late Timer _timer;
@@ -142,6 +167,7 @@ class _CodeCorrectionState extends State<CodeCorrection> {
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
                             Overview(
+                          outFocus: outFocus,
                           duration: duration,
                           snummer: snummer,
                           key: null,

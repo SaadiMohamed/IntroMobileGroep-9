@@ -15,23 +15,47 @@ class Overview extends StatefulWidget {
       {required Key? key,
       required this.questions,
       required this.snummer,
-      required this.duration})
+      required this.duration,
+      required this.outFocus})
       : super(key: key);
 
   dynamic questions;
   String snummer;
   int duration;
+  int outFocus;
 
   @override
-  _OverviewState createState() => _OverviewState(questions, snummer, duration);
+  _OverviewState createState() =>
+      _OverviewState(questions, snummer, duration, outFocus);
 }
 
-class _OverviewState extends State<Overview> {
-  _OverviewState(this.questions, this.snummer, this.duration);
+class _OverviewState extends State<Overview> with WidgetsBindingObserver {
+  _OverviewState(this.questions, this.snummer, this.duration, this.outFocus);
   String snummer;
   dynamic questions;
+  int outFocus = 0;
 
   int duration;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      outFocus++;
+      print(outFocus);
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
+  }
 
   @override
   void initState() {
@@ -116,6 +140,7 @@ class _OverviewState extends State<Overview> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => OpenAntwoord(
+                              outFocus: outFocus,
                               duration: duration,
                               snummer: snummer,
                               index: index,
@@ -131,6 +156,7 @@ class _OverviewState extends State<Overview> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MtpAntwoord(
+                                outFocus: outFocus,
                                 duration: duration,
                                 questions: questions,
                                 snummer: snummer,
@@ -145,6 +171,7 @@ class _OverviewState extends State<Overview> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CodeCorrection(
+                                  outFocus: outFocus,
                                   duration: duration,
                                   key: null,
                                   questions: questions,
