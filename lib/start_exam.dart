@@ -154,6 +154,7 @@ class _StartExamState extends State<StartExam> {
                           PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
                                 Overview(
+                              outFocus: 0,
                               questions: questions,
                               snummer: snummer,
                               duration: duration * 60,

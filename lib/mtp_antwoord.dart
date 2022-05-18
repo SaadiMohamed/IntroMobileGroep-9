@@ -12,22 +12,46 @@ class MtpAntwoord extends StatefulWidget {
       required this.questions,
       required this.index,
       required this.snummer,
-      required this.duration})
+      required this.duration,
+      required this.outFocus})
       : super(key: key);
   var questions;
   final String snummer;
   final int index;
   int duration;
+  int outFocus;
   @override
   _MtpAntwoordState createState() =>
-      _MtpAntwoordState(questions, snummer, index, duration);
+      _MtpAntwoordState(questions, snummer, index, duration, outFocus);
 }
 
-class _MtpAntwoordState extends State<MtpAntwoord> {
+class _MtpAntwoordState extends State<MtpAntwoord> with WidgetsBindingObserver {
   var questions;
   final String snummer;
   final int index;
   int duration;
+  int outFocus;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      outFocus++;
+      print(outFocus);
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
+  }
 
   late Timer _timer;
   void startTimer() {
@@ -51,7 +75,8 @@ class _MtpAntwoordState extends State<MtpAntwoord> {
 
   String answer = "";
   List<String> options = [];
-  _MtpAntwoordState(this.questions, this.snummer, this.index, this.duration);
+  _MtpAntwoordState(
+      this.questions, this.snummer, this.index, this.duration, this.outFocus);
 
   @override
   void initState() {
@@ -151,6 +176,7 @@ class _MtpAntwoordState extends State<MtpAntwoord> {
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
                           Overview(
+                        outFocus: outFocus,
                         duration: duration,
                         snummer: snummer,
                         key: null,

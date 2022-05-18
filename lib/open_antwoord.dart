@@ -13,25 +13,30 @@ class OpenAntwoord extends StatefulWidget {
       required this.questions,
       required this.snummer,
       required this.index,
-      required this.duration})
+      required this.duration,
+      required this.outFocus})
       : super(key: key);
   // ignore: prefer_typing_uninitialized_variables
   var questions;
   final String snummer;
   final int index;
   int duration;
+  int outFocus;
 
   @override
   _OpenAntwoordState createState() =>
-      _OpenAntwoordState(questions, snummer, index, duration);
+      _OpenAntwoordState(questions, snummer, index, duration, outFocus);
 }
 
-class _OpenAntwoordState extends State<OpenAntwoord> {
+class _OpenAntwoordState extends State<OpenAntwoord>
+    with WidgetsBindingObserver {
   var questions;
   int duration;
   final int index;
   final String snummer;
-  _OpenAntwoordState(this.questions, this.snummer, this.index, this.duration);
+  int outFocus;
+  _OpenAntwoordState(
+      this.questions, this.snummer, this.index, this.duration, this.outFocus);
   TextEditingController _controller = TextEditingController();
 
   @override
@@ -39,6 +44,27 @@ class _OpenAntwoordState extends State<OpenAntwoord> {
     _controller.text = questions[index]['studentAnswer'];
     super.initState();
     startTimer();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      outFocus++;
+      print(outFocus);
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
   }
 
   late Timer _timer;
@@ -144,6 +170,7 @@ class _OpenAntwoordState extends State<OpenAntwoord> {
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
                             Overview(
+                          outFocus: outFocus,
                           duration: duration,
                           snummer: snummer,
                           key: null,
