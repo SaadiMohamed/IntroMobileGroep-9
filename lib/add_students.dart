@@ -33,14 +33,14 @@ class AddStudents extends StatelessWidget {
           child: TextField(
               controller: _csvcontroller,
               keyboardType: TextInputType.multiline,
-              maxLines: 35,
+              maxLines: 15,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter csv',
               )),
         ),
         Container(
-            padding: const EdgeInsets.fromLTRB(200, 100, 200, 30),
+            padding: const EdgeInsets.fromLTRB(250, 50, 250, 30),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue,
@@ -49,7 +49,8 @@ class AddStudents extends StatelessWidget {
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0)),
-                minimumSize: const Size(200, 120), //////// HERE
+                minimumSize: const Size(50, 120),
+                maximumSize: const Size(50, 120) //////// HERE
               ),
               onPressed: () {
                 var add = true;
