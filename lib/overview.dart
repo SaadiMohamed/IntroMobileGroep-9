@@ -60,6 +60,7 @@ class _OverviewState extends State<Overview> with WidgetsBindingObserver {
   @override
   void initState() {
     // TODO: implement initState
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
     startTimer();
   }
@@ -103,6 +104,7 @@ class _OverviewState extends State<Overview> with WidgetsBindingObserver {
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
     taken.doc(snummer).update({
       'answers': questions,
+      "outOfFocus" : outFocus
     });
 
     CollectionReference students =

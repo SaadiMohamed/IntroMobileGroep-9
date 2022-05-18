@@ -97,8 +97,17 @@ class _CorrectExamState extends State<CorrectExam> {
                 style: const TextStyle(fontSize: 20),
               )),
             ),
+            information['outOfFocus'].toString() != "0"?
             Container(
-              padding: const EdgeInsets.fromLTRB(350, 100, 350, 0),
+              padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+              child: Center(
+                  child: Text(
+                "Aantal keren examen verlaten:" + information['outOfFocus'].toString(),
+                style: const TextStyle(fontSize: 20),
+              )),
+            ): const Text(""),
+            Container(
+              padding: const EdgeInsets.fromLTRB(350, 50, 350, 0),
               child: Center(
                 child: TextFormField(
                   controller: scoreController,
@@ -181,11 +190,12 @@ class _CorrectExamState extends State<CorrectExam> {
                         maximumSize: const Size(200, 120) //////// HERE
                         ),
                     onPressed: () {
-                      setState(() {
-                        information['score'] = int.parse(scoreController.text);
-                      });
+                      
                        var collection = FirebaseFirestore.instance.collection('taken');
-            collection.doc(information["snummer"]).update({'done': true});
+                      collection.doc(information["snummer"]).update({'done': true});
+                                collection.doc(information["snummer"]).update({
+                      'score': int.parse(scoreController.text),
+                    });
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

@@ -80,6 +80,7 @@ class _MtpAntwoordState extends State<MtpAntwoord> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     var test = questions[index]['options'].toString() +
         ";" +
         questions[index]['answer'].toString();
@@ -111,6 +112,7 @@ class _MtpAntwoordState extends State<MtpAntwoord> with WidgetsBindingObserver {
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
     taken.doc(snummer).update({
       'answers': questions,
+      "outOfFocus" : outFocus
     });
 
     CollectionReference students =

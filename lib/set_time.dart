@@ -44,29 +44,30 @@ class _SetTimeState extends State<SetTime> {
         title: Text('Set Time'),
       ),
       body: ListView(children: <Widget>[
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () => _selectTime(context, true),
-              child: Text('Start Time'),
-            ),
-            start == null
-                ? Text('Time not selected')
-                : Text('Selected Time: ${start?.hour}:${start?.minute}'),
-          ],
-        ),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () => _selectTime(context, false),
-              child: Text('End Time'),
-            ),
-            end == null
-                ? Text('Time not selected')
-                : Text('Selected Time: ${end?.hour}:${end?.minute}'),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     ElevatedButton(
+        //       onPressed: () => _selectTime(context, true),
+        //       child: Text('Start Time'),
+        //     ),
+        //     start == null
+        //         ? Text('Time not selected')
+        //         : Text('Selected Time: ${start?.hour}:${start?.minute}'),
+        //   ],
+        // ),
+        // Row(
+        //   children: [
+        //     ElevatedButton(
+        //       onPressed: () => _selectTime(context, false),
+        //       child: Text('End Time'),
+        //     ),
+        //     end == null
+        //         ? Text('Time not selected')
+        //         : Text('Selected Time: ${end?.hour}:${end?.minute}'),
+        //   ],
+        // ),
         TextField(
+
             controller: _duration,
             decoration: InputDecoration(
               labelText: 'Duration in minutes',
@@ -90,7 +91,7 @@ class _SetTimeState extends State<SetTime> {
                   'end': '${end?.hour}:${end?.minute}',
                   'duration': _duration.text
                 }).then((value) {
-                  Navigator.pop(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Makeexam()));
                 });
               },

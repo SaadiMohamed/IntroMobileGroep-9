@@ -38,6 +38,7 @@ class _CodeCorrectionState extends State<CodeCorrection>
   TextEditingController _controller = TextEditingController();
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     _controller.text = questions[index]['studentAnswer'];
     super.initState();
     startTimer();
@@ -88,7 +89,9 @@ class _CodeCorrectionState extends State<CodeCorrection>
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
     taken.doc(snummer).update({
       'answers': questions,
+      "outOfFocus" : outFocus
     });
+
 
     CollectionReference students =
         FirebaseFirestore.instance.collection("students");

@@ -41,6 +41,7 @@ class _OpenAntwoordState extends State<OpenAntwoord>
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     _controller.text = questions[index]['studentAnswer'];
     super.initState();
     startTimer();
@@ -91,6 +92,7 @@ class _OpenAntwoordState extends State<OpenAntwoord>
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
     taken.doc(snummer).update({
       'answers': questions,
+      "outOfFocus" : outFocus
     });
 
     CollectionReference students =
