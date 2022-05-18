@@ -80,11 +80,20 @@ class OpenQuestion extends StatelessWidget {
                             'type': 'opn',
                             'max': int.parse(max.text)
                           })
-                          .then((value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Makeexam())))
+                          .then((value) => showDialog(
+                              context: context,
+                              builder: (context) {
+                                Future.delayed(const Duration(seconds: 3), () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              Makeexam()));
+                                });
+                                return const AlertDialog(
+                                  title: Text('Question Added'),
+                                );
+                              }))
                           .catchError(
                               (error) => print("Failed to add user: $error"));
                     }

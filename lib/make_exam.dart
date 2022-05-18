@@ -108,7 +108,7 @@ class _MakeexamState extends State<Makeexam> {
                   done.add(all);
                 }
 
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const Makeexam()));
               }),
       body: ListView.builder(
