@@ -61,19 +61,21 @@ class _StartExamState extends State<StartExam> {
       }
     }
     var currentLocation = await location.getLocation();
-    setState(() {
-      lat = currentLocation.latitude;
-      lng = currentLocation.longitude;
-    });
+
     CollectionReference taken = FirebaseFirestore.instance.collection('taken');
     taken.doc(snummer).set(
       {
-        'lat': lat,
-        'lng': lng,
+        'lat': currentLocation.latitude,
+        'lng': currentLocation.longitude,
         'firstname': firstname,
         'lastname': lastname,
       },
     );
+    // setState(() {
+    //   lat = currentLocation.latitude;
+    //   lng = currentLocation.longitude;
+    // });
+    
     return;
   }
 
