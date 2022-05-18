@@ -103,7 +103,7 @@ class _MtpAntwoordState extends State<MtpAntwoord> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Multiple question                                                                        ${formatedTime()}'),
+            "Multiple choice vraag                                                                                                                      Resterende tijd: ${formatedTime()}"),
       ),
       body: ListView(
         children: [

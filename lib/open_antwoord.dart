@@ -97,7 +97,7 @@ class _OpenAntwoordState extends State<OpenAntwoord> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              'Open vraag                                                                        ${formatedTime()}'),
+              "Open vraag                                                                                                                        Resterende tijd: ${formatedTime()}"),
         ),
         body: ListView(
           children: [

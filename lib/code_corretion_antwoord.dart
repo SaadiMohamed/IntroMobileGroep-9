@@ -95,7 +95,7 @@ class _CodeCorrectionState extends State<CodeCorrection> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              'Code correction vraag                                                                        ${formatedTime()}'),
+              "Code correction vraag                                                                                                       Resterende tijd: ${formatedTime()}"),
         ),
         body: ListView(
           children: [

@@ -96,7 +96,7 @@ class _OverviewState extends State<Overview> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              "Vragen van het examen                                                                        ${formatedTime()}"),
+              "Vragen van het examen                                                                                                               Resterende tijd: ${formatedTime()}"),
         ),
         floatingActionButton: ElevatedButton(
           onPressed: () {
